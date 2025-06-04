@@ -42,7 +42,15 @@ namespace Proiect
             try
             {
                 string cod = txt_Cod.Text;
+                if(cod.Length != 3)
+                {
+                    throw new ArgumentException("Codul introdus nu e valid!!");
+                }
                 string denumire = txt_denumire.Text;
+                if(denumire.Length < 3)
+                {
+                    throw new ArgumentException("Denumirea introdusa nu e valida!");
+                }
                 double cursInRon;
                 if (!double.TryParse(txt_CursInRon.Text, out cursInRon))
                 {
@@ -61,7 +69,7 @@ namespace Proiect
             }
             catch (Exception ex)
             {
-                    
+                    MessageBox.Show(ex.Message,"ERROR", MessageBoxButtons.OK, MessageBoxIcon.Stop);
             }
             finally { 
                 txt_Cod.Clear();
@@ -85,22 +93,49 @@ namespace Proiect
 
         private void btn_ActualizeazaValuta_Click(object sender, EventArgs e)
         {
-            conn.Open();
-            SqlCommand cmd = new SqlCommand("UPDATE Valute SET Denumire = @denumire, CursInRON = @cursInRon WHERE Cod = @cod", conn);
-            cmd.Parameters.AddWithValue("@cod", txt_Cod.Text);
-            cmd.Parameters.AddWithValue("@denumire", txt_denumire.Text);
-            cmd.Parameters.AddWithValue("@cursInRON", float.Parse(txt_CursInRon.Text));
-            cmd.ExecuteNonQuery();
-            MessageBox.Show($"Valuta cu codul {txt_Cod.Text} a fost actualizata!");
-            
-            
-            conn.Close();
-            this.Close();
+            try
+            {
+                if (txt_denumire.Text.Length < 3)
+                {
+                    throw new ArgumentException("Denumirea introdusa nu e valida!");
+                }
+                if (decimal.Parse(txt_CursInRon.Text) <= 0 || txt_CursInRon.Text == null)
+                {
+                    throw new ArgumentException("Cursul valutar nu e corect introdus!");
+                }
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("UPDATE Valute SET Denumire = @denumire, CursInRON = @cursInRon WHERE Cod = @cod", conn);
+                cmd.Parameters.AddWithValue("@cod", txt_Cod.Text);
+                cmd.Parameters.AddWithValue("@denumire", txt_denumire.Text);
+                cmd.Parameters.AddWithValue("@cursInRON", float.Parse(txt_CursInRon.Text));
+                cmd.ExecuteNonQuery();
+                MessageBox.Show($"Valuta cu codul {txt_Cod.Text} a fost actualizata!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+            }
+            finally
+            {
+                conn.Close();
+                this.Close();
+            }
         }
 
         private void Form3_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void txt_Cod_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if(e.KeyChar >= 'A' && e.KeyChar<= 'Z' || e.KeyChar == (char)8)
+            {
+                e.Handled = false;
+            }else
+            {
+                e.Handled = true;
+            }
         }
     }
 }

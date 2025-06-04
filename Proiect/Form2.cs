@@ -67,15 +67,16 @@ namespace Proiect
                 return;
             }
 
-         
-
-
             try
             {
                 
                 string cod = ((Valuta)comboBox_Valute.SelectedItem).Cod;
                 decimal suma;
                 if (!decimal.TryParse(txt_Suma.Text, out suma))
+                {
+                    throw new ArgumentException("Suma introdusa nu este valida!");
+                }
+                if(suma == 0)
                 {
                     throw new ArgumentException("Suma introdusa nu este valida!");
                 }
@@ -119,15 +120,36 @@ namespace Proiect
 
         private void btn_ActualizeazaTranzactie2_Click(object sender, EventArgs e)
         {
-            conn.Open();
-            SqlCommand cmd = new SqlCommand("UPDATE Tranzactii SET ValutaCod = @valutaCod, Suma = @suma, Data = @data WHERE Id = @id", conn);
-            cmd.Parameters.AddWithValue("@valutaCod", comboBox_Valute.SelectedValue);
-            cmd.Parameters.AddWithValue("@suma", decimal.Parse(txt_Suma.Text));
-            cmd.Parameters.AddWithValue("@data", dateTimePicker1.Value);
-            cmd.Parameters.AddWithValue("@id", tranzactie.Id);
-            cmd.ExecuteNonQuery();
-            conn.Close();
-            this.Close();
+            try
+            {
+                if(txt_Suma.Text == null || double.Parse(txt_Suma.Text) == 0)
+                {
+                    throw new ArgumentException("Suma introdusa nu este valida!");
+                }
+
+                if (dateTimePicker1.Value > DateTime.Now)
+                {
+                    throw new ArgumentException("Data introdusa nu este valida!");
+                }
+
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("UPDATE Tranzactii SET ValutaCod = @valutaCod, Suma = @suma, Data = @data WHERE Id = @id", conn);
+                cmd.Parameters.AddWithValue("@valutaCod", comboBox_Valute.SelectedValue);
+                cmd.Parameters.AddWithValue("@suma", decimal.Parse(txt_Suma.Text));
+                cmd.Parameters.AddWithValue("@data", dateTimePicker1.Value);
+                cmd.Parameters.AddWithValue("@id", tranzactie.Id);
+                cmd.ExecuteNonQuery();
+                
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                conn.Close();
+                this.Close();
+            }
         }
 
         private void Form2_Load(object sender, EventArgs e)

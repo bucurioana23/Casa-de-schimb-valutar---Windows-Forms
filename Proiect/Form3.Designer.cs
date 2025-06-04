@@ -44,6 +44,7 @@
             this.txt_Cod.Name = "txt_Cod";
             this.txt_Cod.Size = new System.Drawing.Size(338, 29);
             this.txt_Cod.TabIndex = 0;
+            this.txt_Cod.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_Cod_KeyPress);
             // 
             // txt_denumire
             // 
