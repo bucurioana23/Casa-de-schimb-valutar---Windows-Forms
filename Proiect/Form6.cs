@@ -20,6 +20,7 @@ namespace Proiect
             comboBox1.DataSource = _form1.cursValutar.Valute;
             comboBox1.DisplayMember = "Denumire";
             comboBox1.ValueMember = "Cod";
+            textBox1.DataBindings.Add(new Binding("Text",comboBox1,""));
         }
 
         private void Form6_Load(object sender, EventArgs e)
@@ -39,6 +40,21 @@ namespace Proiect
             }
             textBox1.Clear();
             textBox1.Text = suma.ToString();
+        }
+
+        private void Prev_Click(object sender, EventArgs e)
+        {
+            int currentIndex = comboBox1.SelectedIndex;
+            if (((Button)sender).Text == "<")
+            {
+                if (currentIndex > 0)
+                    comboBox1.SelectedIndex--;
+            }
+            else
+            {
+                if (currentIndex < comboBox1.Items.Count - 1)
+                    comboBox1.SelectedIndex++;
+            }
         }
     }
 }

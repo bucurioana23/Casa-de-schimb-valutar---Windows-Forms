@@ -32,6 +32,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.Next = new System.Windows.Forms.Button();
+            this.Prev = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // comboBox1
@@ -69,12 +71,34 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Total tranzactii in valuta selectata:";
             // 
+            // Next
+            // 
+            this.Next.Location = new System.Drawing.Point(472, 125);
+            this.Next.Name = "Next";
+            this.Next.Size = new System.Drawing.Size(70, 63);
+            this.Next.TabIndex = 4;
+            this.Next.Text = ">";
+            this.Next.UseVisualStyleBackColor = true;
+            this.Next.Click += new System.EventHandler(this.Prev_Click);
+            // 
+            // Prev
+            // 
+            this.Prev.Location = new System.Drawing.Point(12, 125);
+            this.Prev.Name = "Prev";
+            this.Prev.Size = new System.Drawing.Size(68, 63);
+            this.Prev.TabIndex = 5;
+            this.Prev.Text = "<";
+            this.Prev.UseVisualStyleBackColor = true;
+            this.Prev.Click += new System.EventHandler(this.Prev_Click);
+            // 
             // Form6
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.ClientSize = new System.Drawing.Size(553, 369);
+            this.ClientSize = new System.Drawing.Size(565, 428);
+            this.Controls.Add(this.Prev);
+            this.Controls.Add(this.Next);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
@@ -93,5 +117,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button Next;
+        private System.Windows.Forms.Button Prev;
     }
 }
